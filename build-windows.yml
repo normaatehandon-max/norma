@@ -1,0 +1,35 @@
+name: Compilar CEDULA_INGRESOS.exe
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Descargar proyecto
+        uses: actions/checkout@v4
+
+      - name: Instalar .NET 8 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restaurar paquetes
+        run: dotnet restore
+
+      - name: Publicar EXE autónomo
+        run: >
+          dotnet publish -c Release -r win-x64 --self-contained true
+          -p:PublishSingleFile=true
+          -p:PublishTrimmed=false
+          -p:EnableCompressionInSingleFile=true
+
+      - name: Subir ejecutable
+        uses: actions/upload-artifact@v4
+        with:
+          name: CEDULA_INGRESOS_WINDOWS
+          path: bin/Release/net8.0-windows/win-x64/publish/*

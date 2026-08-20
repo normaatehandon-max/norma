@@ -1,0 +1,50 @@
+CÉDULA DE INGRESOS — PAQUETE FINAL PARA CREAR UN .EXE AUTÓNOMO
+
+RESULTADO FINAL
+CEDULA_INGRESOS.exe
+
+Ese ejecutable es para Windows x64 y, una vez compilado, NO necesita Python,
+NO necesita navegador y NO necesita tener .NET instalado en la computadora donde se use.
+
+INTERFAZ
+1. CARGAR ESTADO DE CUENTA (PDF)
+2. CARGAR AUXILIAR 2150 (EXCEL)
+3. PROCESAR Y CONCILIAR
+4. GENERAR CÉDULA DE INGRESOS
+
+SALIDA
+Genera un Excel usando la plantilla original:
+cedulas INGRESOS(3).xlsx
+
+REGLAS
+- Cada depósito permanece como un movimiento individual.
+- El importe se conserva exactamente como se detecta en el estado de cuenta.
+- Concepto/Referencia queda en su propia columna.
+- UUID queda en columna O.
+- FACTURA (folio interno) queda en columna P.
+- Diferencia se calcula en Q.
+- Estatus de cruce queda en R.
+- Si el cruce no es seguro, marca REVISAR / NO IDENTIFICADO.
+
+OPCIÓN A — COMPILAR UNA SOLA VEZ EN UNA PC DE DESARROLLO
+Requiere .NET 8 SDK SOLO EN LA COMPUTADORA DONDE SE COMPILA.
+No se instala nada en las computadoras donde después se use el EXE.
+
+Ejecutar:
+COMPILAR.ps1
+
+Resultado:
+bin\Release\net8.0-windows\win-x64\publish\CEDULA_INGRESOS.exe
+
+OPCIÓN B — COMPILAR EN LA NUBE CON GITHUB ACTIONS
+El proyecto incluye:
+.github\workflows\build-windows.yml
+
+Al subir esta carpeta a un repositorio de GitHub y ejecutar el workflow,
+GitHub genera el archivo autónomo para Windows. Después solo se descarga
+CEDULA_INGRESOS.exe y se coloca en el escritorio.
+
+IMPORTANTE SOBRE BANCOS
+El lector incluido reconoce de forma específica el estado de cuenta BBVA
+Maestra PYME usado como ejemplo. Incluye un lector genérico de respaldo,
+pero bancos con PDFs diferentes pueden requerir agregar otro parser.
